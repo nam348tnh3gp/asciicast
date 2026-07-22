@@ -1,6 +1,9 @@
 # asciicast
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b74d2cb8-9dca-4759-91c3-9da26574dc05" />
+</p>
 
-Play any video as ASCII art directly in your terminal — written in C.
+**Play any video as ASCII art directly in your terminal — written in C.**
 
 ## Requirements
 
@@ -50,9 +53,9 @@ Press Ctrl+C to stop playback.
 Temporary frame data is stored in `~/.asciicast/frames/`.
 
 ## Examples
-
 ```sh
 cd asciicast
 yt-dlp --merge-output-format mp4 "https://www.youtube.com/watch?v=FtutLA63Cp8" -o BadApple
 ./asciicast BadApple.mp4
 ```
+
