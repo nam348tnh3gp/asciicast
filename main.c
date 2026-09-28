@@ -1,13 +1,29 @@
 #include "asciicast.h"
+#include <stdio.h>
+#include <string.h>
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-        return 1;
+    int withAudio = 1;
+    const char *file = NULL;
 
-    generateFrames(argv[1]);
+    for (int i = 1; i < argc; i++) {
+        if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--no-audio"))
+            withAudio = 0;
+        else if (!file)
+            file = argv[i];
+        else
+            file = NULL, i = argc;
+    }
+
+    if (!file) {
+        fprintf(stderr, "Usage: %s [-n] <video-file>\n", argv[0]);
+        return 1;
+    }
+
+    generateFrames(file);
     generateGrayFrames();
-    readGenerateASCII(argv[1]);
+    readGenerateASCII(file, withAudio);
 
     return 0;
 }

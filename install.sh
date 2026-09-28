@@ -40,7 +40,7 @@ install_deps() {
     if [ "$IS_TERMUX" -eq 1 ]; then
         say "Termux detected"
         pkg update -y
-        pkg install -y clang make ffmpeg imagemagick libjpeg-turbo pulseaudio
+        pkg install -y clang make findutils ffmpeg imagemagick libjpeg-turbo pulseaudio
     elif have apt-get; then
         say "Debian/Ubuntu detected"
         $SUDO apt-get update
@@ -97,7 +97,7 @@ if [ "$IS_TERMUX" -eq 1 ]; then
     say "Termux tips:"
     echo "  - Videos in shared storage: run 'termux-setup-storage' once, then use ~/storage/..."
     echo "  - If audio is silent, run: pulseaudio --start --exit-idle-time=-1"
-    echo "  - If video runs ahead of sound: ASCIICAST_AUDIO_DELAY_MS=150 asciicast video.mp4"
+    echo "  - If video and sound are out of sync, shift the video clock (ms): ASCIICAST_AUDIO_DELAY_MS=-80 asciicast video.mp4"
 fi
 
-say "Done. Usage: asciicast <video-file>   (add -n to disable audio)"
+say "Done. Usage: asciicast [-n] <video-file>   (-n = no audio)"

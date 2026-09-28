@@ -48,7 +48,7 @@ sudo pacman -S gcc make ffmpeg imagemagick libjpeg-turbo libpulse alsa-utils
 # Fedora
 sudo dnf install gcc make ffmpeg ImageMagick libjpeg-turbo-devel pulseaudio-utils alsa-utils
 # Termux
-pkg install clang make ffmpeg imagemagick libjpeg-turbo pulseaudio
+pkg install clang make findutils ffmpeg imagemagick libjpeg-turbo pulseaudio
 
 make
 ```
@@ -56,8 +56,10 @@ make
 ## Usage
 
 ```sh
-./asciicast <video-file>
+./asciicast [-n] <video-file>
 ```
+
+`-n` (or `--no-audio`) plays without sound.
 
 Press Ctrl+C to stop playback.
 

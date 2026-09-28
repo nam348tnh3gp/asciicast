@@ -278,7 +278,7 @@ void generateFrames(const char *file)
         return;
 
     /* drop any half-finished conversion from an interrupted run */
-    sprintf(cmd, "rm -rf \"%s\" && mkdir -p \"%s/frames\" && ffmpeg -i %s -vf scale=%d:%d \"%s/frames/%%04d.jpg\"",
+    sprintf(cmd, "rm -rf \"%s\" && mkdir -p \"%s/frames\" && ffmpeg -i %s -vf scale=%d:%d -start_number 0 \"%s/frames/%%04d.jpg\"",
             cacheDir, cacheDir, file, c, r, cacheDir);
     system(cmd);
 }
@@ -290,13 +290,22 @@ void generateGrayFrames(void)
     if (isCached())
         return;
 
-    /* keep only the gray frames, then mark the cache as complete */
-    sprintf(cmd, "mkdir -p \"%s/frames/gray\" && magick convert \"%s/frames\"/*.jpg -colorspace Gray \"%s/frames/gray/%%04d.jpg\" && rm -f \"%s/frames\"/*.jpg && touch \"%s/.done\"",
+    /*
+     * Long videos have tens of thousands of frames, so the file list must not
+     * be passed as one glob (\"Argument list too long\"): find|xargs runs
+     * ImageMagick in batches. Keep only the gray frames, then mark the cache
+     * as complete.
+     */
+    sprintf(cmd, "mkdir -p \"%s/frames/gray\" && "
+                 "find \"%s/frames\" -maxdepth 1 -name '*.jpg' -print0 | "
+                 "xargs -0 magick mogrify -path \"%s/frames/gray\" -colorspace Gray && "
+                 "find \"%s/frames\" -maxdepth 1 -name '*.jpg' -delete && "
+                 "touch \"%s/.done\"",
             cacheDir, cacheDir, cacheDir, cacheDir, cacheDir);
     system(cmd);
 }
 
-void readGenerateASCII(const char *file)
+void readGenerateASCII(const char *file, int withAudio)
 {
     uint8_t *pixels = NULL;
     size_t n = getNumberOfFrames();
@@ -312,7 +321,8 @@ void readGenerateASCII(const char *file)
 
     setvbuf(stdout, NULL, _IOFBF, 1 << 16);
     signal(SIGINT, onSigint);
-    startAudio(file);
+    if (withAudio)
+        startAudio(file);
     t0 = nowSec() + delayMs / 1000.0;
 
     for (size_t i = 0; i < n; i++) {
