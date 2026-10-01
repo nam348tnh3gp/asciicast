@@ -238,6 +238,14 @@ static void setCacheDir(const char *file, int c, int r)
              getenv("HOME"), (unsigned long long)h);
 }
 
+void clearCache(void)
+{
+    char cmd[MAX_PATH];
+
+    snprintf(cmd, sizeof cmd, "rm -rf \"%s/.asciicast/cache\"", getenv("HOME"));
+    system(cmd);
+}
+
 static int isCached(void)
 {
     char path[MAX_PATH];

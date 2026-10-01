@@ -27,6 +27,13 @@ chmod +x install.sh
 | `--no-deps` | Skip dependency installation, only build and install       |
 | `--user`    | Install to `~/.local/bin` instead of `/usr/local/bin`      |
 
+`asciicast` itself also takes flags:
+
+| Flag                  | Effect                                |
+|-----------------------|----------------------------------------|
+| `-n`, `--no-audio`    | Play without sound                    |
+| `-c`, `--clear-cache` | Delete `~/.asciicast/cache` and exit  |
+
 ### Termux
 
 ```sh
@@ -56,10 +63,10 @@ make
 ## Usage
 
 ```sh
-./asciicast [-n] <video-file>
+./asciicast [-n] [-c] <video-file>
 ```
 
-`-n` (or `--no-audio`) plays without sound.
+`-n` (or `--no-audio`) plays without sound. `-c` (or `--clear-cache`) deletes the whole frame cache and exits.
 
 Press Ctrl+C to stop playback.
 

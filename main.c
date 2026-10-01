@@ -10,14 +10,17 @@ int main(int argc, char **argv)
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--no-audio"))
             withAudio = 0;
-        else if (!file)
+        else if (!strcmp(argv[i], "-c") || !strcmp(argv[i], "--clear-cache")) {
+            clearCache();
+            return 0;
+        } else if (!file)
             file = argv[i];
         else
             file = NULL, i = argc;
     }
 
     if (!file) {
-        fprintf(stderr, "Usage: %s [-n] <video-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s [-n] [-c] <video-file>\n", argv[0]);
         return 1;
     }
 
